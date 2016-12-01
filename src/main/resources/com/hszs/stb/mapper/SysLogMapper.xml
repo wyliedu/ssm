@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hszs.stb.dao.SysLogDAO" >
+  	<resultMap id="modelMap" type="com.hszs.stb.model.system.LogInfo"></resultMap>
+	
+	<insert id="addLog" parameterType="com.hszs.stb.model.system.LogInfo">
+		insert into sys_log(description,method,requestIp,exceptionCode,exceptionDetail,params,operator,accountid,type,createtime)
+		 VALUES(#{description},#{method},#{requestIp},#{exceptionCode},#{exceptionDetail},#{params},#{operator},#{accountid},#{type},now());
+	</insert>
+	
+	<select id="queryLogList" resultType="com.hszs.stb.model.system.LogInfo">
+	 select * from sys_log 
+	</select>
+</mapper>

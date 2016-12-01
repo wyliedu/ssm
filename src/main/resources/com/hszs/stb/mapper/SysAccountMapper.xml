@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hszs.stb.dao.SysAccountDAO" >
+  	<resultMap id="userMap" type="com.hszs.stb.model.auth.Account"></resultMap>
+	<select id="selectByUsernameAndPassword" resultMap="userMap">
+	 select * from e_account where username=#{username} and password=#{password}
+	</select>
+	
+	<select id="selectByUsername" resultMap="userMap">
+	 select * from e_account where username=#{username}
+	</select>
+	
+	<select id="queryAccountList" resultType="com.hszs.stb.model.auth.Account">
+	 select a.*,b.name as rolename from e_account a,sys_role b where a.roleid=b.roleid
+	</select>
+	
+	<insert id="addAccount" parameterType="com.hszs.stb.model.auth.Account">
+		insert into e_account(accountid,username,password,payphone,roleid,name) VALUES(NEXTVAL('accountid'),#{payphone},#{password},#{payphone},#{roleid},#{name});
+	</insert>
+	
+	<delete id="deleteAccount">
+		delete from e_account where accountid=#{accountid}
+	</delete>
+	
+	<update id="updateAccount" parameterType="com.hszs.stb.model.auth.Account">
+	update e_account <set> 
+		roleid=#{roleid},payphone=#{payphone},username=#{payphone},name=#{name}
+	</set> where accountid=#{accountid}
+	</update>
+	
+</mapper>

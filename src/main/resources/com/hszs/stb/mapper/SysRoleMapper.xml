@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hszs.stb.dao.SysRoleDAO" >
+  	<resultMap id="roleMap" type="com.hszs.stb.model.auth.Role">    
+  	</resultMap>
+  	
+  	<resultMap id="authorityMap" type="com.hszs.stb.model.auth.Authority">   
+  	</resultMap>
+  	
+	<select id="selectById" resultMap="roleMap">
+	 select * from sys_role where roleid=#{id} 
+	</select>
+	
+	<select id="selectAuthorityByRoleId" resultMap="authorityMap">
+	 select a.* from sys_authority a,sys_role_authority b where b.authorityid=a.authorityid and b.roleid=#{roleId} 
+	</select>
+	
+	<select id="selectAuthorityById" resultMap="authorityMap">
+	 select * from sys_authority  where authorityid =#{id} 
+	</select>
+	
+	<delete id="deleteAuthorityOfRole">
+		delete from sys_role_authority where roleid=#{roleid}
+	</delete>
+	
+	<insert id="addAuthorityOfRole">
+	 insert into sys_role_authority(authorityid,roleid) values(#{authorityid},#{roleid})
+	</insert>
+	
+	<select id="selectAllAuthority" resultMap="authorityMap">
+	 	select * from sys_authority 
+	</select>
+	
+	<select id="queryAllRoles" resultMap="roleMap">
+	 select * from sys_role 
+	</select>
+	
+	<select id="selectAllUsingRole" resultMap="roleMap">
+	 select * from sys_role 
+	</select>
+	
+	<insert id="addRole" parameterType="com.hszs.stb.model.auth.Role">
+		insert into sys_role(roleid,`name`,enable) VALUES(NEXTVAL('roleid'),#{name},0);
+	</insert>
+	
+	<select id="selectByName" resultMap="roleMap" parameterType="com.hszs.stb.model.auth.Role">
+	 select * from sys_role where name=#{name} 
+	 <if test="roleid!=null"> and roleid!=#{roleid}</if>
+	</select>
+	
+	<update id="updateRole" parameterType="com.hszs.stb.model.auth.Role">
+	update sys_role c<set> 
+	name=#{name}
+	</set> where roleid=#{roleid}
+	</update>
+	
+	<delete id="deleteRole">
+		delete from sys_role where roleid=#{roleid}
+	</delete>
+	
+	<update id="usingRole">
+	update sys_role c<set> 
+		c.enable=abs(c.enable-1)
+	</set> where roleid=#{roleid}
+	</update>
+</mapper>

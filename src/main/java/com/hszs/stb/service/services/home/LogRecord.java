@@ -135,7 +135,6 @@ public class LogRecord {
             }
             item.setMethod((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));//请求方法
             this.sysLogDAO.addLog(item);
-            System.out.println("=====前置通知结束=====");    
         }  catch (Exception e) {    
             //记录本地异常日志    
             log.error("==前置通知异常==");    

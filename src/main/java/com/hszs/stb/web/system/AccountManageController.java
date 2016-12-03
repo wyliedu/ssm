@@ -46,7 +46,7 @@ public class AccountManageController{
 	@AuthPassport
     @RequestMapping(value = "/index")
     public String index(HttpServletRequest request,HttpServletResponse response) throws Exception { 	
-        return "system/accountManage";
+		return "system/accountManage";
     }  
 	
 	@AuthPassport

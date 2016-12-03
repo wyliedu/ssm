@@ -263,6 +263,11 @@
   				<version>2.7.3</version> 
 			</dependency> 
   			<!--Redis end --> 
+  			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-ehcache</artifactId>
+				<version>1.0.0</version>
+			</dependency>
   </dependencies>
   
   <repositories>

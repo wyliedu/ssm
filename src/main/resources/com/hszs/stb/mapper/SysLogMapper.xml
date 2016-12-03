@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hszs.stb.dao.SysLogDAO" >
-  	<resultMap id="modelMap" type="com.hszs.stb.model.system.LogInfo"></resultMap>
+ <!-- 以下两个<cache>标签二选一,第一个可以输出日志缓存命中率,第二个不输出日志 -->  
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->  
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache" />  
 	
 	<insert id="addLog" parameterType="com.hszs.stb.model.system.LogInfo">
 		insert into sys_log(description,method,requestIp,exceptionCode,exceptionDetail,params,operator,accountid,type,createtime)
 		 VALUES(#{description},#{method},#{requestIp},#{exceptionCode},#{exceptionDetail},#{params},#{operator},#{accountid},#{type},now());
 	</insert>
 	
-	<select id="queryLogList" resultType="com.hszs.stb.model.system.LogInfo">
+	<!-- useCache属性默认为true,可以不设置 -->
+	<select id="queryLogList" resultType="com.hszs.stb.model.system.LogInfo" useCache="true">
 	 select * from sys_log 
 	</select>
 </mapper>

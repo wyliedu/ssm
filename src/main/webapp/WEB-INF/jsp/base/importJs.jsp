@@ -23,3 +23,5 @@
     <script type="text/javascript" src="<c:url value='/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/plugins/bootstrapvalidator-master/dist/js/bootstrapValidator.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/plugins/bootstrapvalidator-master/dist/js/language/zh_CN.js'/>"></script>
+    
+    <script src="<c:url value='/js/common.js'/>"></script>

@@ -758,7 +758,7 @@ public class DateHelper {
     public static String timestamp2DatetimeString(Timestamp time){
     	if(time==null)
     		return "";
-    	return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(time.getTime()));
+    	return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time.getTime()));
     }
     
     /**

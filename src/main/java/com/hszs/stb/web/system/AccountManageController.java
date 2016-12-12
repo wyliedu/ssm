@@ -86,7 +86,7 @@ public class AccountManageController{
 	 * @throws Exception
 	 */
 	@AuthPassport
-    @RequestMapping(value = "/deleteAccount.do", method = {RequestMethod.POST})
+    @RequestMapping(value = "/index/deleteAccount.do", method = {RequestMethod.POST})
     public void deleteRole(
     		@RequestParam("accountid") int accountid,
     		HttpServletRequest request,HttpServletResponse response) throws Exception { 

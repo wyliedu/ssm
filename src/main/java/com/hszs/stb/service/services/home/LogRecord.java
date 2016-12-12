@@ -22,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.hszs.stb.common.helper.JSONUtil;
+import com.hszs.stb.common.helper.RequestHelper;
 import com.hszs.stb.dao.SysLogDAO;
 import com.hszs.stb.model.auth.AccountAuth;
 import com.hszs.stb.model.home.SystemControllerLog;
@@ -122,7 +123,8 @@ public class LogRecord {
              //读取session中的用户    
              AccountAuth accountAuth=AuthHelper.getSessionAccountAuth(request);
              //请求的IP    
-             String ip = request.getRemoteAddr(); 
+             //String ip = request.getRemoteAddr(); 
+             String ip = RequestHelper.getRemoteAddr(request);
             //*========数据库日志=========*//    
             LogInfo item = new LogInfo();
             item.setRequestIp(ip);					//请求IP
@@ -155,7 +157,7 @@ public class LogRecord {
         //读取session中的用户    
         AccountAuth accountAuth=AuthHelper.getSessionAccountAuth(request);   
         //获取请求ip    
-        String ip = request.getRemoteAddr();    
+        String ip = RequestHelper.getRemoteAddr(request);  
         //获取用户请求方法的参数并序列化为JSON格式字符串    
         String params = "";    
          if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {    

@@ -83,11 +83,11 @@
 	</bean>
 	
 	<!-- 默认的注解映射的支持 -->  
-    <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
+<!--     <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
     
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
-        <!-- 不设置则默认为classpath下的ValidationMessages.properties -->
+        不设置则默认为classpath下的ValidationMessages.properties
         <property name="validationMessageSource" ref="validatemessageSource"/>
     </bean>
     <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
@@ -95,7 +95,7 @@
         <property name="basename" value="classpath:validatemessages"/>  
         <property name="fileEncodings" value="utf-8"/>  
         <property name="cacheSeconds" value="120"/>  
-	</bean> 
+	</bean>  -->
 
     <!-- 配置自定义过滤 -->
     <mvc:interceptors>
@@ -143,41 +143,6 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-    <!-- bean name view resolver-->
-    <!-- <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>    
-    根据客户端的不同的请求决定不同的 view进行响应, 如 /blog/1.json /blog/1.xml  
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="1">  
-        设置为true以忽略对Accept Header的支持  
-        扩展名至mimeType的映射,即 /user.json => application/json  
-        <property name="favorPathExtension" value="false"/>  
-        用于开启 /userinfo/123?format=json 的支持  
-        <property name="favorParameter" value="false"/>         
-        <property name="mediaTypes">  favorPathExtension, favorParameter是true时才起作用 
-            <map>  
-               <entry key="wml" value="text/vnd.wap.wml"/>
-               <entry key="vnd" value="application/vnd.wap.xhtml+xml"/>
-               <entry key="xhtml" value="application/xhtml+xml"/>
-               <entry key="html" value="*"/>
-            </map>  
-         </property>  
-         <property name="viewResolvers">  
-            <list>  
-               <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                  <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-                  <property name="contentType" value="text/html"/>
-                  <property name="prefix" value="/WEB-INF/jsp/"/>
-                  <property name="suffix" value=".jsp"/>
-               </bean>
-           </list>  
-        </property>  
-    </bean>  
-    默认的视图解析器 在上边的解析错误时使用 (默认使用html)-
-    <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="2">
-       <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-       <property name="contentType" value="text/html"/>        
-       <property name="prefix" value="/WEB-INF/jsp/"/>
-       <property name="suffix" value=".jsp"/>
-    </bean> -->
     
     <!-- 支持上传文件 -->  
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
@@ -189,31 +154,20 @@
 			<value>UTF-8</value> 
 		</property>
     </bean>
-    <!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->  
-    <!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->  
-    <!-- 
-    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
-        <property name="exceptionMappings">  
-            <props>  -->
-                <!-- 遇到MaxUploadSizeExceededException异常时，自动跳转到/WEB-INF/jsp/error_fileupload.jsp页面 -->  
-              <!-- <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error_fileupload</prop>  
-            </props>   
-        </property>  
-    </bean>  -->
 	
     <!-- 总错误处理-->
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
 		<property name="exceptionMappings">     
              <props>     
-<!--                  <prop key="java.lang.Exception">/home/error</prop>     
-                 <prop key="java.lang.Throwable">/home/error</prop>    -->
+                 <prop key="java.lang.Exception">/home/error</prop>     
+                 <prop key="java.lang.Throwable">/home/error</prop>   
                  <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">/home/error</prop>      
              </props>     
          </property> 
-        <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->     
-<!--     	<property name="defaultErrorView">   
-        	<value>/home/error</value> 
-    	</property>  -->
+		<!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->
+	<property name="defaultErrorView" value="error"></property>
+	<!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->
+	<property name="exceptionAttribute" value="ex"></property>
     	<!-- 默认HTTP状态码 --> 
     	<property name="defaultStatusCode">   
         	<value>500</value> 

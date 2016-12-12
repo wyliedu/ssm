@@ -54,7 +54,7 @@
 				</c:forEach>
 			</li>
 		</c:forEach>
-		<li><a class="" href="/ssm/home/login"><i class="fa fa-power-off"></i>退出登录</a></li>
+		<li><a class="" href="/ssm/home/login"><i class="fa fa-power-off"></i>安全退出</a></li>
 		</ul>
 	</div>
 </nav>

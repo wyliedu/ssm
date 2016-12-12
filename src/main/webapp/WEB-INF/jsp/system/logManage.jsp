@@ -73,7 +73,7 @@ $(function() {
                }, "sClass" : "text-center"
              }
    ];
-	CommonFunction.dataTable(".table","<%=request.getContextPath()%>/log/list.do",c);
+	IndexFunction.dataTable(".table","<%=request.getContextPath()%>/log/list.do",c);
 });
 </script>
 </html>

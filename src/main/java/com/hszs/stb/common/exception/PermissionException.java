@@ -2,7 +2,7 @@ package com.hszs.stb.common.exception;
 
 /**
  * 权限异常类
- * @author misswhen
+ * @author du
  *
  */
 public class PermissionException extends Exception {

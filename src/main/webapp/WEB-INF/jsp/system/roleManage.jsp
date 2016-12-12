@@ -84,85 +84,39 @@ var id = null;
 var aData= null;
 
 $(function() {
-	$(".table").dataTable({
-		serverSide: false,	//分页，取数据等等的都放到服务端去
-		processing: true,	//载入数据的时候是否显示“载入中”
-		pageLength: 10,		//首次加载的数据条数
-		ordering: false,		//排序操作
-		"bLengthChange": false,
-		"bFilter": false,
-		"bDeferRender": true,
-		"bAutoWidth" : true, //是否自适应宽度  
-		ajax:  {//类似jquery的ajax参数，基本都可以用。
-			type: "post",//后台指定了方式，默认get，外加datatable默认构造的参数很长，有可能超过get的最大长度。
-			url: "<%=request.getContextPath()%>/role/rolelist.do",
-			dataType: "json",
-			dataSrc: "data",//默认data，也可以写其他的，格式化table的时候取里面的数据
-			data:function(d){
-				var p={};
-				return p;
-			}
-	    } ,
-	    "columnDefs": [ {
-            "searchable": false,
-            "orderable": false,
-            "targets": 0
-        } ],
-	    "order": [[ 1, 'asc' ]],
-	    showRowNumber:true,
-	    columns: [//对应上面thead里面的序列
-	              {  data: "xh", "sClass" : "text-center" },
-	              { data: "name", "sClass" : "text-center" },
-	              { data: function (e) {
-	            	  	var sContent = '';
-	              		if(e.enable==1){
-	              			sContent = "启用";
-	              		}else {
-	              			sContent = "不启用";
-	              		}
-	                    return sContent;
-	            	  }, "sClass" : "text-center" },
-	              { data: function (e) {//这里给最后一列返回一个操作列表
-	                    //e是得到的json数组中的一个item ，可以用于控制标签的属性。
- 	                    var sContent = '<button class="btn btn-primary modify">修改</button>&nbsp;&nbsp;&nbsp;';
- 	                    if(e.enable==1){
-	              			sContent = sContent+'<button class="btn btn-warning using">不启用</button>&nbsp;&nbsp;&nbsp;';
-	              		}else {
-	              			sContent = sContent+'<button class="btn btn-warning using">启用</button>&nbsp;&nbsp;&nbsp;';
-	              		}
-	                    sContent = sContent+'<a class="btn btn-info" href="<%=request.getContextPath()%>/role/authority?roleid='+e.roleid+'">权限</a>&nbsp;&nbsp;&nbsp;<button class="btn btn-danger delete">删除</button>'; 
-	                    return sContent;
-	                }, "sClass" : "text-center"
-	              }
-	    ] ,
-	    initComplete: function (setting, json) {
-	        //初始化完成之后替换原先的搜索框。
-	        //本来想把form标签放到hidden_filter 里面，因为事件绑定的缘故，还是拿出来。
-	       // $(tablePrefix+"_filter").html("<form id='filter_form'>" + $("#hidden_filter").html() + "</form>");
-	    },
-	    language: {
-	        lengthMenu: '<select class="form-control input-xsmall">' + '<option value="5">5</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
-	        processing: "载入中",//处理页面数据的时候的显示
-	        paginate: {//分页的样式文本内容。
-	            previous: "上一页",
-	            next: "下一页",
-	            first: "第一页",
-	            last: "最后一页"
-	         },
-	         zeroRecords: "没有内容",//table tbody内容为空时，tbody的内容。
-	         //下面三者构成了总体的左下角的内容。
-	         info: "总共_PAGES_页，显示第_START_到第 _END_条 ",//左下角的信息显示，大写的词为关键字。
-	         infoEmpty: "0条记录",//筛选为空时左下角的显示。
-	         infoFiltered: ""//筛选之后的左下角筛选提示(另一个是分页信息显示，在上面的info中已经设置，所以可以不显示)，
-	    } 
-	});   
+	var c = [//对应上面thead里面的序列
+             {  data: "xh", "sClass" : "text-center" },
+             { data: "name", "sClass" : "text-center" },
+             { data: function (e) {
+           	  	var sContent = '';
+             		if(e.enable==1){
+             			sContent = "启用";
+             		}else {
+             			sContent = "不启用";
+             		}
+                   return sContent;
+           	  }, "sClass" : "text-center" },
+             { data: function (e) {//这里给最后一列返回一个操作列表
+                   //e是得到的json数组中的一个item ，可以用于控制标签的属性。
+                    var sContent = '<button class="btn btn-primary modify">修改</button>&nbsp;&nbsp;&nbsp;';
+                    if(e.enable==1){
+             			sContent = sContent+'<button class="btn btn-warning using">不启用</button>&nbsp;&nbsp;&nbsp;';
+             		}else {
+             			sContent = sContent+'<button class="btn btn-warning using">启用</button>&nbsp;&nbsp;&nbsp;';
+             		}
+                   sContent = sContent+'<a class="btn btn-info" href="<%=request.getContextPath()%>/role/index/authority/'+CommonFunction.encode64(e.roleid)+'">权限</a>&nbsp;&nbsp;&nbsp;<button class="btn btn-danger delete">删除</button>'; 
+                   return sContent;
+               }, "sClass" : "text-center"
+             }
+   ];
+	IndexFunction.dataTable(".table","<%=request.getContextPath()%>/role/index/rolelist.do",c);
 });
 $(document).on('click','.using',function(){
 	aData = $(".table").DataTable().row($(this).parents("tr")).data();
 	$.ajax( {
 		type:"post",//不写此参数默认为get方式提交
 		async:false,   //设置为同步
-		url : "<%=request.getContextPath()%>/role/usingRole.do",//请求的uri
+		url : "<%=request.getContextPath()%>/role/index/usingRole.do",//请求的uri
 		data : {roleid:aData.roleid},//传递到后台的参数				
 		cache : false,
 		dataType : 'text',//后台返回前台的数据格式为json
@@ -180,7 +134,7 @@ $(document).on('click','.delete',function(){
 	$.ajax( {
 		type:"post",//不写此参数默认为get方式提交
 		async:false,   //设置为同步
-		url : "<%=request.getContextPath()%>/role/deleteRole.do",//请求的uri
+		url : "<%=request.getContextPath()%>/role/index/deleteRole.do",//请求的uri
 		data : {roleid:aData.roleid},//传递到后台的参数				
 		cache : false,
 		dataType : 'text',//后台返回前台的数据格式为json
@@ -219,7 +173,7 @@ $(".summit").click(function () {
 		$.ajax( {
 			type:"post",//不写此参数默认为get方式提交
 			async:false,   //设置为同步
-			url : "<%=request.getContextPath()%>/role/updateRole.do",//请求的uri
+			url : "<%=request.getContextPath()%>/role/index/updateRole.do",//请求的uri
 			data : {
 				roleid:id,
 				name:$('#name').val(),
@@ -259,32 +213,6 @@ $(function(){
             }                
         }       
     });
-    
-    jQuery.validator.addMethod("SerialCheck", function(value, element) {      
-	      return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);      
-	  }, "");
-    // usernamecheck 用户名校验
-     jQuery.validator.addMethod("usernamecheck", function(value, element) {      
-	      return this.optional(element) || /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(value);      
-	  }, "必须为字母、数字或下划线，不能以数字开头");
-    //passwordcheck 密码校验
-    jQuery.validator.addMethod("passwordcheck", function(value, element) {      
-	      return this.optional(element) || /^(?![a-z]+$)(?![A-Z]+$)(?![0-9]+$)[0-9a-zA-Z\W]\S{6,18}$/.test(value);      
-	  }, "密码应包含字母、数字、符号中的至少2种");
-    jQuery.validator.addMethod("phone", function(value, element) {   
-        var tel = /^1[3-8]\d{9}$/;
-        return this.optional(element) || (tel.test(value));
-    }, "请输入正确的手机号码");
-    //中文两个字节
-    jQuery.validator.addMethod("byteRangeLength", function(value, element, param) {      
-    	var length = value.length;      
-  	for(var i = 0; i < value.length; i++){      
-      if(value.charCodeAt(i) > 127){      
-      length++;      
-      }      
-    	}      
-  	return this.optional(element) || ( length >= param[0] && length <= param[1] );      
-		}, "不得多余16字");
 });
 </script>
 </html>

@@ -61,7 +61,7 @@ public class AuthController extends AbstractController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"/login.action"}, method = {GET, POST})
+/*    @RequestMapping(value = {"/login.action"}, method = {GET, POST})
     @ResponseBody
     public ApiResponseBody actionLogin(
             @RequestParam("account") String account,
@@ -77,7 +77,7 @@ public class AuthController extends AbstractController {
         }
         final UserInfo sui = authService.login(account, passwd, deviceId, apptype, getuiCid);
         final AccessToken atoken = AccessToken.of(sui, deviceId, RequestHelper.getRemoteAddr(request), apptype.value);
-/*        List<BankInfo> bankInfos = new ArrayList<>();
+        List<BankInfo> bankInfos = new ArrayList<>();
         if(sui.OutletId!=null){
             for(Integer outletid:sui.OutletId) {
                 OutletInfo outlet = outletService.getOutletInfo(outletid);
@@ -87,7 +87,7 @@ public class AuthController extends AbstractController {
                 bankInfo.operateinfo = operateinfo;
                 bankInfos.add(bankInfo);
             }
-        }*/
+        }
 
 
         final LoginView lview = LoginView.of(sui, atoken.toToken());
@@ -95,74 +95,13 @@ public class AuthController extends AbstractController {
         //lview.verifyInfo = userService.getUserVerifyInfo(sui.uid);
 
         return ApiResponseBody.createSuccessBody(lview);
-    }
+    }*/
     
-    /**
-     * 徒弟注册时校验手机号与验证码
-     * @param payphone
-     * @param msgcode
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-	@RequestMapping(value = {"/queryMsgcode.action"}, method = {GET, POST })
-	@ResponseBody
-	public ApiResponseBody queryMsgcode(
-			@RequestParam("payphone")String payphone,
-			@RequestParam("msgcode")String msgcode,
-            @RequestParam("apptype") int apptypeVal,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-        final AppType apptype = AppType.of(apptypeVal);
-		Msgcode item = this.authService.queryMsgcode(payphone, msgcode,apptype);
-		return ApiResponseBody.createSuccessBody(item);
-	}
+
 	
-	/**
-	 * 徒弟注册
-	 * @param password
-	 * @param name
-	 * @param payphone
-	 * @param teamid
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(value = {"/apprenticeRegister.action"}, method = {GET, POST })
-	@ResponseBody
-	public ApiResponseBody apprenticeRegister(
-			@RequestParam("password")String password,
-			@RequestParam("name")String name,
-			@RequestParam("payphone")String payphone,
-			@RequestParam("teamid")int teamid,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		this.authService.apprenticeRegister(password, name, payphone, teamid);
-		return ApiResponseBody.createSuccessBody(true);
-	}
+
 	
-	/**
-	 * 师傅注册
-	 * @param password
-	 * @param name
-	 * @param payphone
-	 * @param teamname
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(value = {"/seniorRegister.action"}, method = {GET, POST })
-	@ResponseBody
-	public ApiResponseBody seniorRegister(
-			@RequestParam("password")String password,
-			@RequestParam("name")String name,
-			@RequestParam("payphone")String payphone,
-			@RequestParam("teamname")String teamname,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		this.authService.seniorRegister(password, name, payphone, teamname);
-		return ApiResponseBody.createSuccessBody(true);
-	}
+
 	
 	/**
 	 * 师傅添加邀请

@@ -9,7 +9,6 @@
     <title>121师徒帮</title>
 
    <%@ include file="../base/importCss.jsp"%>
-   <%@ include file="../base/importJs.jsp"%>
 </head>
 <body>
     <div id="wrapper">
@@ -43,6 +42,7 @@
         <!-- /. PAGE WRAPPER  -->
     </div>
     <!-- /. WRAPPER  -->
+    <%@ include file="../base/importJs.jsp"%>
 	<%@ include file="../base/pageFooter.jsp"%>
     <!-- /. FOOTER  -->
 </body>

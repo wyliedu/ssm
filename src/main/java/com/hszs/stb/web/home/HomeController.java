@@ -18,6 +18,8 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hszs.stb.common.ApiCode;
@@ -98,6 +100,7 @@ public class HomeController{
     public String login(Model model){
 		if(!model.containsAttribute("contentModel"))
             model.addAttribute("contentModel", new AccountUser());
+		AuthHelper.removeSession();
     	return "home/login";
     }
     

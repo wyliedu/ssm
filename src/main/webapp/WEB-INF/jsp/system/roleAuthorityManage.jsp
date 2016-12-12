@@ -57,7 +57,7 @@ function refreshTree(){
 	$.ajax( {
 		type:"post",//不写此参数默认为get方式提交
 		async:false,   //设置为同步
-		url : "<%=request.getContextPath()%>/role/getAuthorityList.do",//请求的uri
+		url : "<%=request.getContextPath()%>/role/index/getAuthorityList.do",//请求的uri
 		data : {roleid:$('#roleid').val()},//传递到后台的参数				
 		cache : false,
 		dataType : 'json',//后台返回前台的数据格式为json
@@ -67,26 +67,47 @@ function refreshTree(){
 					$('#tree').treeview('toggleNodeExpanded', [ data.nodeId, { silent: true } ]);
 	  			  },onNodeChecked:function(event,node){
 	  				  $('#tree').treeview('expandNode', [ node.nodeId, { silent: true } ]);
-	  				  if(node.parentId!=null){  //子节点，则父节点自动勾上
-	  					$('#tree').treeview('checkNode', [ node.parentId, { silent: true } ]);
-	  				  }else{
-	  					var nodelist = $('#tree').treeview('getEnabled', node.nodeId);
+	  				  if(node.parentId!=null){  //子节点，则父节点自动勾上,孙节点自动勾上
+ 	  					var nodelist = $('#tree').treeview('getEnabled', node.nodeId);
 	  					for(var i=0;i<nodelist.length;i++){
 	  						if(nodelist[i].parentId==node.nodeId){
 	  							$('#tree').treeview('checkNode', [ nodelist[i].nodeId, { silent: true } ]);
 	  						}
 	  					}
-	  				  }
-	  			  },onNodeUnchecked:function(event,node){
-	  				  $('#tree').treeview('expandNode', [ node.nodeId, { silent: true } ]);
-	  				  if(node.parentId==null){  //父节点
+	  					$('#tree').treeview('checkNode', [ node.parentId, { silent: true } ]);
+	  					var pnode = $('#tree').treeview('getParent', node);  //父节点
+	  					if(pnode.parentId!=null){
+	  						$('#tree').treeview('checkNode', [ pnode.parentId, { silent: true } ]);
+	  					} 
+	  				  }else{
 	  					var nodelist = $('#tree').treeview('getEnabled', node.nodeId);
 	  					for(var i=0;i<nodelist.length;i++){
 	  						if(nodelist[i].parentId==node.nodeId){
-	  							$('#tree').treeview('uncheckNode', [ nodelist[i].nodeId, { silent: true } ]);
+	  							var cnode = $('#tree').treeview('getNode', nodelist[i].nodeId); //子节点
+	  							$('#tree').treeview('checkNode', [ nodelist[i].nodeId, { silent: true } ]);
+	  							for(var j=0;j<nodelist.length;j++){
+	  								if(nodelist[j].parentId==cnode.nodeId){
+	  									$('#tree').treeview('checkNode', [ nodelist[j].nodeId, { silent: true } ]);
+	  								}
+	  							}
 	  						}
 	  					}
-		  			}
+	  				  }
+	  			  },onNodeUnchecked:function(event,node){
+	  				  $('#tree').treeview('expandNode', [ node.nodeId, { silent: true } ]);
+	  					var nodelist = $('#tree').treeview('getEnabled', node.nodeId);
+	  					for(var i=0;i<nodelist.length;i++){
+	  						if(nodelist[i].parentId==node.nodeId){
+	  							var cnode = $('#tree').treeview('getNode', nodelist[i].nodeId); //子节点
+	  							$('#tree').treeview('uncheckNode', [ nodelist[i].nodeId, { silent: true } ]);
+	  							for(var j=0;j<nodelist.length;j++){
+	  								if(nodelist[j].parentId==cnode.nodeId){
+	  									$('#tree').treeview('uncheckNode', [ nodelist[j].nodeId, { silent: true } ]);
+	  								}
+	  							}
+	  						}
+	  					}
+
 		  			 }});
 
 	}}); 
@@ -102,10 +123,14 @@ $(document).on('click','#save',function(){
 			roleid:$('#roleid').val()
 			},//传递到后台的参数				
 		cache : false,
-		dataType : 'text',//后台返回前台的数据格式为json
+		dataType : 'json',//后台返回前台的数据格式为json
 		success : function(data) {
 			refreshTree();
-			alert("保存成功!");
+			if(data.code!=0){
+				alert(data.message);
+			}else{
+				alert("保存成功!");
+			}
 		},error: function () {
             alert('系统出现异常，请稍微再试!');
         }});

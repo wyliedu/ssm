@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hszs.stb.common.exception.ServiceException;
+import com.hszs.stb.common.extension.StringHelper;
+import com.hszs.stb.common.helper.CodecHelper;
 import com.hszs.stb.model.auth.Account;
 import com.hszs.stb.model.auth.Authority;
 import com.hszs.stb.model.auth.AuthorityMenu;
@@ -65,7 +67,7 @@ public class RoleManageController{
 	 * @throws Exception
 	 */
 	@AuthPassport
-    @RequestMapping(value = "/rolelist.do", method = {RequestMethod.POST})
+    @RequestMapping(value = "/index/rolelist.do", method = {RequestMethod.POST})
 	@ResponseBody
     public TableResult rolelist(HttpServletRequest request,HttpServletResponse response) throws Exception { 
 		TableResult result = new TableResult();
@@ -87,7 +89,7 @@ public class RoleManageController{
 	 * @throws Exception
 	 */
 	@AuthPassport
-    @RequestMapping(value = "/usingRole.do", method = {RequestMethod.POST})
+    @RequestMapping(value = "/index/usingRole.do", method = {RequestMethod.POST})
     public void usingRole(
     		@RequestParam("roleid") int roleid,
     		HttpServletRequest request,HttpServletResponse response) throws Exception { 
@@ -102,7 +104,7 @@ public class RoleManageController{
 	 * @throws Exception
 	 */
 	@AuthPassport
-    @RequestMapping(value = "/deleteRole.do", method = {RequestMethod.POST})
+    @RequestMapping(value = "/index/deleteRole.do", method = {RequestMethod.POST})
     public void deleteRole(
     		@RequestParam("roleid") int roleid,
     		HttpServletRequest request,HttpServletResponse response) throws Exception { 
@@ -119,7 +121,7 @@ public class RoleManageController{
 	 * @throws Exception
 	 */
 	@AuthPassport
-    @RequestMapping(value = {"/updateRole.do"}, method = {RequestMethod.POST})
+    @RequestMapping(value = {"/index/updateRole.do"}, method = {RequestMethod.POST})
 	@ResponseBody
     public ResponseResult updateRole(
     		Role role,HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -146,7 +148,7 @@ public class RoleManageController{
 	 */
 	@AuthPassport
 	@ResponseBody
-	@RequestMapping(value = "/selectAllUsingRole.do", method = {RequestMethod.POST})
+	@RequestMapping(value = "/index/selectAllUsingRole.do", method = {RequestMethod.POST})
 	public List selectAllUsingRole(
    		HttpServletRequest request,HttpServletResponse response) throws Exception { 
 		List<Role> list = this.roleService.selectAllUsingRole();
@@ -162,9 +164,10 @@ public class RoleManageController{
 	 * @throws Exception
 	 */
 	@AuthPassport
-    @RequestMapping(value = "/authority")
-    public String authority(@RequestParam("roleid") int roleid,HttpServletRequest request,HttpServletResponse response) throws Exception { 
-		Role role = this.homeService.getRoleById(roleid);
+    @RequestMapping(value = "/index/authority/{roleid}")
+    public String authority(@PathVariable String roleid,HttpServletRequest request,HttpServletResponse response) throws Exception { 
+		String a = StringHelper.decode64(roleid);
+		Role role = this.homeService.getRoleById(Integer.valueOf(a));
 		request.setAttribute("role", role);
 		return "system/roleAuthorityManage";
     } 
@@ -179,7 +182,7 @@ public class RoleManageController{
 	 */
 	@AuthPassport
 	@ResponseBody
-	@RequestMapping(value = "/getAuthorityList.do", method = {RequestMethod.POST})
+	@RequestMapping(value = "/index/getAuthorityList.do", method = {RequestMethod.POST})
 	public List getAuthorityList(
 		@RequestParam("roleid") int roleid,
    		HttpServletRequest request,HttpServletResponse response) throws Exception { 
@@ -205,7 +208,22 @@ public class RoleManageController{
     	    					cnodeState = new NodeState(true, false, true, false);
     	    				}
     	    			}
-    					childrenTreeNodes.add(new TreeNode(subAuthority.getAuthorityid(), subAuthority.getName(), subAuthority.getItemIcon(),true,cnodeState));
+    	    			TreeNode childrennode = new TreeNode(subAuthority.getAuthorityid(), subAuthority.getName(), subAuthority.getItemIcon(),true,cnodeState);
+    	    			List<TreeNode> grandchildrenTreeNodes=new ArrayList<TreeNode>();  //孙菜单
+    	    			for(Authority grandAuthority :allAuthoritys){   	
+    	    				if(grandAuthority.getParentId()!=null && grandAuthority.getParentId().equals(subAuthority.getAuthorityid())){
+    	    					NodeState gnodeState = null; 
+    	    	    			for(Authority roleAuthority :list){   
+    	    	    				if(roleAuthority.getAuthorityid().equals(grandAuthority.getAuthorityid())){
+    	    	    					gnodeState = new NodeState(true, false, true, false);
+    	    	    				}
+    	    	    			}
+    	    	    			TreeNode gnodchildrennode = new TreeNode(grandAuthority.getAuthorityid(), grandAuthority.getName(), grandAuthority.getItemIcon(),true,gnodeState);
+    	    	    			grandchildrenTreeNodes.add(gnodchildrennode);
+    	    				}
+    	    			}
+    	    			childrennode.setNodes(grandchildrenTreeNodes);
+    	    			childrenTreeNodes.add(childrennode);
     				}
     			}
     			treenode.setNodes(childrenTreeNodes);
@@ -224,16 +242,24 @@ public class RoleManageController{
 	 * @throws Exception
 	 */
 	@AuthPassport
+	@ResponseBody
 	@RequestMapping(value = "/saveAuthorityOfRole.do", method = {RequestMethod.POST})
-	public void saveAuthorityOfRole(
+	public ResponseResult saveAuthorityOfRole(
 		@RequestParam("roleid") String roleid,
 		@RequestParam("checkedlist") String checkedlist,
    		HttpServletRequest request,HttpServletResponse response) throws Exception { 
-		JSONArray ja = (JSONArray)JSONSerializer.toJSON(checkedlist);
-		this.roleService.deleteAuthorityOfRole(Integer.valueOf(roleid));
-		for(int i=0;i<ja.size();i++){
-			JSONObject jo = ja.getJSONObject(i);
-			this.roleService.addAuthorityOfRole(jo.getInt("id"), Integer.valueOf(roleid));
+		ResponseResult rr = new ResponseResult();
+		try{
+			JSONArray ja = (JSONArray)JSONSerializer.toJSON(checkedlist);
+			this.roleService.deleteAuthorityOfRole(Integer.valueOf(roleid));
+			for(int i=0;i<ja.size();i++){
+				JSONObject jo = ja.getJSONObject(i);
+				this.roleService.addAuthorityOfRole(jo.getInt("id"), Integer.valueOf(roleid));
+			}
+		}catch(Exception e){
+			rr.setCode(-1);
+			rr.setMessage(e.getMessage());
 		}
+		return rr;
 	} 
 }  

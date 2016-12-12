@@ -40,14 +40,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             			if(matcher.find()){
             				hasPermission=true;
             				AuthHelper.setRequestPermissionMenu(request, permissionMenu);
+            				break;
             			}
             		}
-            		
-            		return true;
-/*            		if(hasPermission)
+            		if(hasPermission)
             			return true;
             		else
-            			throw new PermissionException("没有权限！");*/
+            			throw new PermissionException("没有操作该功能的权限！");
             		
             	}
             	else

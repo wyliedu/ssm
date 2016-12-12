@@ -6,11 +6,11 @@
 <!--     <cache type="org.mybatis.caches.ehcache.EhcacheCache" /> -->
     
   	<resultMap id="userMap" type="com.hszs.stb.model.auth.Account"></resultMap>
-	<select id="selectByUsernameAndPassword" resultMap="userMap">
+	<select id="selectByUsernameAndPassword" resultMap="userMap" useCache="false">
 	 select * from e_account where username=#{username} and password=#{password}
 	</select>
 	
-	<select id="selectByUsername" resultMap="userMap">
+	<select id="selectByUsername" resultMap="userMap" useCache="false">
 	 select * from e_account where username=#{username}
 	</select>
 	

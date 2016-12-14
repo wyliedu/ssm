@@ -19,11 +19,28 @@
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd  
                         http://www.springframework.org/schema/mvc  
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+  	
   	<!-- 扫描注解 -->
   	<context:component-scan base-package="com.hszs.stb" />
   	
 	<!-- 启动对@AspectJ注解的支持,通知spring使用cglib而不是jdk的来生成代理方法 AOP可以拦截到Controller-->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
+    
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+        <!-- 不设置则默认为classpath下的ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="validatemessageSource"/>
+    </bean>
+    <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+    <bean id="validatemessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="basename" value="classpath:validatemessages"/>  
+        <property name="fileEncodings" value="utf-8"/>  
+        <property name="cacheSeconds" value="120"/>  
+	</bean> 
+	
+	<!-- 默认的注解映射的支持   -->
+    <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
     
     <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
 		<constructor-arg value="UTF-8" index="0" />
@@ -45,7 +62,7 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="byteArrayHttpMessageConverter" class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+	<!-- <bean id="byteArrayHttpMessageConverter" class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 	<bean id="conversionService" class="org.springframework.format.support.DefaultFormattingConversionService" />
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"></bean>
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
@@ -56,46 +73,31 @@
 		</property>
 		<property name="messageConverters">
 			<list>
-				<!-- <ref bean="stringHttpMessageConverter" /> -->
+				<ref bean="stringHttpMessageConverter" />
 				<ref bean="mappingJacksonHttpMessageConverter" />
 				<ref bean="byteArrayHttpMessageConverter" />
 			</list>
 		</property>
-	</bean>
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+	</bean> -->
+<!-- 	<bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
 		<property name="messageConverters">
 			<list>
 				<ref bean="stringHttpMessageConverter" />
 				<ref bean="mappingJacksonHttpMessageConverter" />
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 	
 	<!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
-	<bean
+<!-- 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<list>
-				<ref bean="mappingJacksonHttpMessageConverter" />	<!-- JSON转换器 -->
+				<ref bean="mappingJacksonHttpMessageConverter" />	JSON转换器
 				<ref bean="stringHttpMessageConverter" />
 			</list>
 		</property>
-	</bean>
-	
-	<!-- 默认的注解映射的支持 -->  
-<!--     <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
-    
-    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
-        不设置则默认为classpath下的ValidationMessages.properties
-        <property name="validationMessageSource" ref="validatemessageSource"/>
-    </bean>
-    <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
-    <bean id="validatemessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
-        <property name="basename" value="classpath:validatemessages"/>  
-        <property name="fileEncodings" value="utf-8"/>  
-        <property name="cacheSeconds" value="120"/>  
-	</bean>  -->
+	</bean> -->
 
     <!-- 配置自定义过滤 -->
     <mvc:interceptors>
@@ -178,5 +180,4 @@
     	</property>    
 	</bean>
 	
-	<mvc:annotation-driven/>  
 </beans>

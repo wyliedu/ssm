@@ -13,6 +13,7 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,7 +105,7 @@ public class AccountManageController{
     @RequestMapping(value = {"/updateAccount.do"}, method = {RequestMethod.POST})
 	@ResponseBody
     public ResponseResult addAccount(
-    		Account account,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    		@Validated Account account,HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ResponseResult rr = new ResponseResult();
 		try{
 			if(account.getAccountid()==null){

@@ -131,5 +131,5 @@
                 <property name="configLocation" value="classpath:com/hszs/stb/config/ehcache-config.xml"></property>
             </bean>
         </property>
-    </bean>
+    </bean> 
 </beans>

@@ -5,15 +5,22 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,8 +31,10 @@ import com.hszs.stb.model.api.AccessToken;
 import com.hszs.stb.model.api.ApiResponseBody;
 import com.hszs.stb.model.api.LoginView;
 import com.hszs.stb.model.api.UserInfo;
+import com.hszs.stb.model.auth.Account;
 import com.hszs.stb.model.auth.Msgcode;
 import com.hszs.stb.model.enums.AppType;
+import com.hszs.stb.model.home.AccountUser;
 import com.hszs.stb.model.home.ParameterInfo;
 import com.hszs.stb.model.rly.SMSResponse.TemplateSMS;
 import com.hszs.stb.service.services.api.AuthService;
@@ -38,7 +47,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = {"/apis/auth"})
-public class AuthController extends AbstractController {
+public class AuthController  extends AbstractController{
 
     static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -179,14 +188,12 @@ public class AuthController extends AbstractController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"/updatePortrait.action"}, method = {GET, POST})
+    @RequestMapping(value = {"/va.action"}, method = {GET, POST})
     @ResponseBody
     public ApiResponseBody updatePortrait(
-    		@RequestParam("userid") int userid,
-            @RequestParam("category") int category,
-            @RequestParam("portraitAddress") String portraitAddress,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	this.authService.updatePortrait(userid, category, portraitAddress);
+    		@Validated @RequestBody Account account, 
+            HttpServletRequest request, HttpServletResponse response) throws Exception{
+    	String a = "a";
         return ApiResponseBody.createSuccessBody(true);
     }
 }

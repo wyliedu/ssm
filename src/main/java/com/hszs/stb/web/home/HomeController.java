@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -113,8 +114,9 @@ public class HomeController{
      * @return
      * @throws Exception 
      */
+    //@Valid的参数后必须紧挨着一个BindingResult 参数，否则spring会在校验不通过时直接抛出异常
     @RequestMapping(value="/login", method = {RequestMethod.POST})
-	public String login(HttpServletRequest request, Model model, @Valid @ModelAttribute("contentModel") AccountUser accountUser, BindingResult result) throws Exception{
+	public String login(HttpServletRequest request, Model model, @Validated @ModelAttribute("contentModel") AccountUser accountUser, BindingResult result) throws Exception{
     	//如果有验证错误 返回到form页面
         if(result.hasErrors())
             return login(model);

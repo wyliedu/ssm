@@ -174,7 +174,7 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.8.9</version>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
        		<groupId>javax.validation</groupId>
        		<artifactId>validation-api</artifactId>
        		<version>1.1.0.Final</version>
@@ -186,22 +186,28 @@
        		<version>1.1.0.Final</version>
        		<classifier>sources</classifier>
        		<scope>provided</scope>
-   		</dependency>
+   		</dependency> -->
    		<dependency>  
     		<groupId>javax.validation</groupId>  
     		<artifactId>validation-api</artifactId>  
     		<version>1.1.0.Final</version>  
 		</dependency> 
-   		<dependency>
+<!--    		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>4.2.8.Final</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.1.Final</version>
+			 <version>5.2.4.Final</version>
 		</dependency>
+<dependency>  
+    <groupId>javax.el</groupId>  
+    <artifactId>javax.el-api</artifactId>  
+    <version>2.2.4</version>  
+    <scope>provided</scope>  
+</dependency>
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
@@ -238,12 +244,6 @@
 				<version>18.0</version>
 			</dependency>
 			
-			<dependency>
-    			<groupId>com.gexin.platform</groupId>
-    			<artifactId>gexin-rp-sdk-http</artifactId>
-    			<version>4.0.1.2</version>
-			</dependency>
-			
 			<!-- mybatis分页插件依赖 -->
 			<dependency>
     			<groupId>com.github.pagehelper</groupId>
@@ -270,23 +270,6 @@
 			</dependency>
   </dependencies>
   
-  <repositories>
-    	<repository>
-        	<id>getui-nexus</id>
-        <url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
-    		</repository>
-    		<repository>
-          <id>sonatype-nexus-snapshots</id>
-          <name>Sonatype Nexus Snapshots</name>
-          <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-          <releases>
-                <enabled>false</enabled>
-          </releases>
-          <snapshots>
-                <enabled>true</enabled>
-          </snapshots>
-    </repository>
-	 </repositories>
   <build>
     <finalName>ssm</finalName>
   </build>

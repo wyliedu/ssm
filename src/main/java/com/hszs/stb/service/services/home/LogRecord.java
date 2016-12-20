@@ -21,12 +21,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;    
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.hszs.stb.annotation.SystemControllerLog;
+import com.hszs.stb.annotation.SystemServiceLog;
 import com.hszs.stb.common.helper.JSONUtil;
 import com.hszs.stb.common.helper.RequestHelper;
 import com.hszs.stb.dao.SysLogDAO;
 import com.hszs.stb.model.auth.AccountAuth;
-import com.hszs.stb.model.home.SystemControllerLog;
-import com.hszs.stb.model.home.SystemServiceLog;
 import com.hszs.stb.model.system.LogAnnotation;
 import com.hszs.stb.model.system.LogInfo;
 import com.hszs.stb.web.home.AuthHelper; 
@@ -51,11 +51,11 @@ public class LogRecord {
 	public void aspect(){	}*/
 	
     //Service层切点    
-    @Pointcut("@annotation(com.hszs.stb.model.home.SystemServiceLog)")    
+    @Pointcut("@annotation(com.hszs.stb.annotation.SystemServiceLog)")    
      public  void serviceAspect() {    }    
     
     //Controller层切点    
-    @Pointcut("@annotation(com.hszs.stb.model.home.SystemControllerLog)")    
+    @Pointcut("@annotation(com.hszs.stb.annotation.SystemControllerLog)")    
      public  void controllerAspect() {    }
     
 	/*

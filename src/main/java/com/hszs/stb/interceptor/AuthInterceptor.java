@@ -1,4 +1,4 @@
-package com.hszs.stb.web.home;
+package com.hszs.stb.interceptor;
 
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.hszs.stb.annotation.AuthPassport;
 import com.hszs.stb.common.exception.PermissionException;
 import com.hszs.stb.model.auth.AccountAuth;
 import com.hszs.stb.model.auth.PermissionMenu;
-import com.hszs.stb.model.home.AuthPassport;
+import com.hszs.stb.web.home.AuthHelper;
 
 
 public class AuthInterceptor extends HandlerInterceptorAdapter {

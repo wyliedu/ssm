@@ -1,32 +1,17 @@
 package com.hszs.stb.service.services.system;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.hszs.stb.common.ApiCode;
-import com.hszs.stb.common.exception.ServiceException;
-import com.hszs.stb.common.helper.CodecHelper;
-import com.hszs.stb.dao.SysAccountDAO;
 import com.hszs.stb.dao.SysLogDAO;
-import com.hszs.stb.dao.SysRoleDAO;
-import com.hszs.stb.model.auth.Account;
 import com.hszs.stb.model.auth.AccountAuth;
-import com.hszs.stb.model.auth.Role;
-import com.hszs.stb.model.home.SystemServiceLog;
-import com.hszs.stb.model.system.LogAnnotation;
 import com.hszs.stb.model.system.LogInfo;
-import com.hszs.stb.service.interfaces.system.IAccountService;
 import com.hszs.stb.web.home.AuthHelper;
 
 @Service

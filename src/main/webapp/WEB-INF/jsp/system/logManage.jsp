@@ -9,7 +9,6 @@
     <title>121师徒帮</title>
 
    <%@ include file="../base/importCss.jsp"%>
-   <%@ include file="../base/importJs.jsp"%>
 </head>
 <body>
     <div id="wrapper">
@@ -55,6 +54,7 @@
     </div>
     <!-- /. WRAPPER  -->
 	<%@ include file="../base/pageFooter.jsp"%>
+	<%@ include file="../base/importJs.jsp"%>
     <!-- /. FOOTER  -->
 </body>
 <script type="text/javascript">
@@ -73,7 +73,7 @@ $(function() {
                }, "sClass" : "text-center"
              }
    ];
-	IndexFunction.dataTable(".table","<%=request.getContextPath()%>/log/list.do",c);
+	IndexFunction.dataTable(".table",true,"<%=request.getContextPath()%>/log/list.do",c);
 });
 </script>
 </html>

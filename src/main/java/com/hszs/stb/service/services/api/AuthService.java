@@ -16,7 +16,6 @@ import com.hszs.stb.common.helper.PwdHelper;
 import com.hszs.stb.dao.SysAccountDAO;
 import com.hszs.stb.model.api.UserInfo;
 import com.hszs.stb.model.auth.Msgcode;
-import com.hszs.stb.model.enums.AppType;
 
 @Service
 public class AuthService {

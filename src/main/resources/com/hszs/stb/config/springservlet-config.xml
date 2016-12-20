@@ -110,12 +110,12 @@
     		<mvc:mapping path="/**" />
     		<mvc:exclude-mapping path="/apis/**" />
     		<!-- 如果不定义 mvc:mapping path 将拦截所有的URL请求 -->
-        	<bean class="com.hszs.stb.web.home.AuthInterceptor"/>
+        	<bean class="com.hszs.stb.interceptor.AuthInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
 			<mvc:mapping path="/apis/**" />
 			<mvc:exclude-mapping path="/pages/**" />
-			<bean class="com.hszs.stb.web.home.ProjectApiInterceptor" />
+			<bean class="com.hszs.stb.interceptor.ProjectApiInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/apis/**" />
@@ -123,7 +123,7 @@
 			<mvc:exclude-mapping path="/apis/system/**" />
 			<mvc:exclude-mapping path="/pages/**" />
 			<mvc:exclude-mapping path="/apis/statistics/**" />
-			<bean class="com.hszs.stb.web.home.AccessTokenInterceptor" />
+			<bean class="com.hszs.stb.interceptor.AccessTokenInterceptor" />
 		</mvc:interceptor>
     </mvc:interceptors>    
     <!-- 如果当前请求为“/”时，则转发到“/home/hello” -->

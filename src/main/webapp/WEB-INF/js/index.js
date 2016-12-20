@@ -1,8 +1,8 @@
 var IndexFunction =  {
 		//e元素；param为查询人参json格式；columns为字段数组
-		 dataTable :function (e,url,columns,param){
+		 dataTable :function (e,serverSide,url,columns,param){
 			$(e).dataTable({
-				serverSide: true,	//分页，取数据等等的都放到服务端去
+				serverSide: serverSide,	//分页，取数据等等的都放到服务端去
 				processing: true,	//载入数据的时候是否显示“载入中”
 				pageLength: 10,		//首次加载的数据条数
 				ordering: false,		//排序操作
@@ -47,7 +47,7 @@ var IndexFunction =  {
 			         },
 			         zeroRecords: "没有内容",//table tbody内容为空时，tbody的内容。
 			         //下面三者构成了总体的左下角的内容。
-			         info: "总共_PAGES_页，显示第_START_到第_END_条 ",//左下角的信息显示，大写的词为关键字。
+			         info: "总共_PAGES_页_TOTAL_条数据，显示第_START_到第_END_条",//左下角的信息显示，大写的词为关键字。
 			         infoEmpty: "0条记录",//筛选为空时左下角的显示。
 			         infoFiltered: ""//筛选之后的左下角筛选提示(另一个是分页信息显示，在上面的info中已经设置，所以可以不显示)，
 			    } 

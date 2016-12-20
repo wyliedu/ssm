@@ -109,7 +109,7 @@ $(function() {
                }, "sClass" : "text-center"
              }
    ];
-	IndexFunction.dataTable(".table","<%=request.getContextPath()%>/role/index/rolelist.do",c);
+	IndexFunction.dataTable(".table",false,"<%=request.getContextPath()%>/role/index/rolelist.do",c);
 });
 $(document).on('click','.using',function(){
 	aData = $(".table").DataTable().row($(this).parents("tr")).data();

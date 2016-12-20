@@ -1,4 +1,4 @@
-package com.hszs.stb.model.enums;
+package com.hszs.stb.enums;
 
 public class  LogType {
 

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hszs.stb.annotation.AuthPassport;
 import com.hszs.stb.common.exception.ServiceException;
 import com.hszs.stb.common.extension.StringHelper;
 import com.hszs.stb.common.helper.CodecHelper;
@@ -30,7 +31,6 @@ import com.hszs.stb.model.auth.Account;
 import com.hszs.stb.model.auth.Authority;
 import com.hszs.stb.model.auth.AuthorityMenu;
 import com.hszs.stb.model.auth.Role;
-import com.hszs.stb.model.home.AuthPassport;
 import com.hszs.stb.model.home.ResponseResult;
 import com.hszs.stb.model.home.TableResult;
 import com.hszs.stb.model.system.NodeState;
@@ -173,6 +173,34 @@ public class RoleManageController{
     } 
 	
 	/**
+	 * 递归获取该节点已经所有子节点
+	 * @param authority   //当前权限
+	 * @param allAuthoritys   //所有的权限
+	 * @param rolelist        //当前登录用户拥有的权限
+	 * @return
+	 */
+	public TreeNode getNode(Authority authority,List<Authority> allAuthoritys,List<Authority> rolelist){
+		NodeState nodeState = null; 
+		for(Authority roleAuthority :rolelist){   
+			if(roleAuthority.getAuthorityid().equals(authority.getAuthorityid())){
+				nodeState = new NodeState(true, false, true, false);  //勾选
+				break;
+			}
+		}
+		TreeNode treeNode=new TreeNode(authority.getAuthorityid(), authority.getName(),authority.getItemIcon(),true,nodeState);
+		List<TreeNode> childrenTreeNodes=new ArrayList<TreeNode>();  //子菜单
+		for(Authority subAuthority :allAuthoritys){
+    		if(subAuthority.getParentId()!=null && subAuthority.getParentId().equals(authority.getAuthorityid())){
+    			TreeNode childnode = getNode(subAuthority,allAuthoritys,rolelist);
+    			childrenTreeNodes.add(childnode);
+    			
+    		}
+    	}
+		treeNode.setNodes(childrenTreeNodes);
+		return treeNode;
+	}
+	
+	/**
 	 * 查询角色的权限
 	 * @param roleid
 	 * @param request
@@ -186,48 +214,14 @@ public class RoleManageController{
 	public List getAuthorityList(
 		@RequestParam("roleid") int roleid,
    		HttpServletRequest request,HttpServletResponse response) throws Exception { 
-		List<Authority> list = this.homeService.getAuthorityByRoleId(roleid);
-		List<Authority> allAuthoritys = this.homeService.getAllAuthority();
-		List<TreeNode> treeNodes=new ArrayList<TreeNode>();
-    	//转换成树结构便于页面展示
+		List<Authority> list = this.homeService.getAuthorityByRoleId(roleid);  //当前登录用户拥有权限
+		List<Authority> allAuthoritys = this.homeService.getAllAuthority();  //所有权限
+		List<TreeNode> treeNodes=new ArrayList<TreeNode>();  //展示的树
+		//转换成树结构便于页面展示
     	for(Authority authority :allAuthoritys){
-    		if(authority.getParentId()==null){    //一级菜单
-    			NodeState nodeState = null; 
-    			for(Authority roleAuthority :list){   
-    				if(roleAuthority.getAuthorityid().equals(authority.getAuthorityid())){
-    					nodeState = new NodeState(true, false, true, false);
-    				}
-    			}
-    			TreeNode treenode = new TreeNode(authority.getAuthorityid(), authority.getName(),authority.getItemIcon(),true,nodeState);
-    			List<TreeNode> childrenTreeNodes=new ArrayList<TreeNode>();  //子菜单
-    			for(Authority subAuthority :allAuthoritys){   				
-    				if(subAuthority.getParentId()!=null && subAuthority.getParentId().equals(authority.getAuthorityid())){
-    					NodeState cnodeState = null; 
-    	    			for(Authority roleAuthority :list){   
-    	    				if(roleAuthority.getAuthorityid().equals(subAuthority.getAuthorityid())){
-    	    					cnodeState = new NodeState(true, false, true, false);
-    	    				}
-    	    			}
-    	    			TreeNode childrennode = new TreeNode(subAuthority.getAuthorityid(), subAuthority.getName(), subAuthority.getItemIcon(),true,cnodeState);
-    	    			List<TreeNode> grandchildrenTreeNodes=new ArrayList<TreeNode>();  //孙菜单
-    	    			for(Authority grandAuthority :allAuthoritys){   	
-    	    				if(grandAuthority.getParentId()!=null && grandAuthority.getParentId().equals(subAuthority.getAuthorityid())){
-    	    					NodeState gnodeState = null; 
-    	    	    			for(Authority roleAuthority :list){   
-    	    	    				if(roleAuthority.getAuthorityid().equals(grandAuthority.getAuthorityid())){
-    	    	    					gnodeState = new NodeState(true, false, true, false);
-    	    	    				}
-    	    	    			}
-    	    	    			TreeNode gnodchildrennode = new TreeNode(grandAuthority.getAuthorityid(), grandAuthority.getName(), grandAuthority.getItemIcon(),true,gnodeState);
-    	    	    			grandchildrenTreeNodes.add(gnodchildrennode);
-    	    				}
-    	    			}
-    	    			childrennode.setNodes(grandchildrenTreeNodes);
-    	    			childrenTreeNodes.add(childrennode);
-    				}
-    			}
-    			treenode.setNodes(childrenTreeNodes);
-    			treeNodes.add(treenode);
+    		if(authority.getParentId()==null){
+    			TreeNode childnode = getNode(authority,allAuthoritys,list);  //根节点
+    			treeNodes.add(childnode);
     		}
     	}
 		return treeNodes;

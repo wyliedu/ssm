@@ -33,7 +33,6 @@ import com.hszs.stb.model.api.LoginView;
 import com.hszs.stb.model.api.UserInfo;
 import com.hszs.stb.model.auth.Account;
 import com.hszs.stb.model.auth.Msgcode;
-import com.hszs.stb.model.enums.AppType;
 import com.hszs.stb.model.home.AccountUser;
 import com.hszs.stb.model.home.ParameterInfo;
 import com.hszs.stb.model.rly.SMSResponse.TemplateSMS;

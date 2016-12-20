@@ -110,7 +110,7 @@ $(function() {
                }, "sClass" : "text-center"
              }
    ];
-	IndexFunction.dataTable(".table","<%=request.getContextPath()%>/account/list.do",c);
+	IndexFunction.dataTable(".table",false,"<%=request.getContextPath()%>/account/list.do",c);
 });
 
 $(document).on('click','.delete',function(){

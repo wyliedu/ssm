@@ -4,10 +4,10 @@
   	<resultMap id="messageMap" type="com.hszs.stb.model.home.ParameterInfo">  
   	</resultMap>
 	<select id="queryParameterByCode" resultMap="messageMap">
-	 select * from t_parametric p where p.paramcode=#{paramcode} and p.using=1
+	 select * from t_parametric p where p.code=#{paramcode} and p.using=1
 	</select>
 	
 	<select id="queryParameterByCodeAndValue" resultMap="messageMap">
-	 select * from t_parametric p where p.paramcode=#{paramcode} and p.using=1 and p.paramvalue=#{paramvalue}
+	 select * from t_parametric p where p.code=#{paramcode} and p.using=1 and p.value=#{paramvalue}
 	</select>
 </mapper>

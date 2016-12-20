@@ -1,4 +1,4 @@
-package com.hszs.stb.web.home;
+package com.hszs.stb.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

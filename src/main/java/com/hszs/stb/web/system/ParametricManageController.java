@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hszs.stb.model.home.AuthPassport;
+import com.hszs.stb.annotation.AuthPassport;
 import com.hszs.stb.model.home.ParameterInfo;
 import com.hszs.stb.model.system.Location;
 import com.hszs.stb.service.services.home.HomeService;

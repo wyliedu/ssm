@@ -17,7 +17,6 @@ import com.hszs.stb.model.auth.Account;
 import com.hszs.stb.model.auth.Authority;
 import com.hszs.stb.model.auth.Role;
 import com.hszs.stb.model.home.ParameterInfo;
-import com.hszs.stb.model.home.SystemServiceLog;
 import com.hszs.stb.model.system.Location;
 import com.hszs.stb.service.interfaces.home.IHomeService;
 

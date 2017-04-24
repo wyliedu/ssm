@@ -58,7 +58,7 @@ public class AuthController  extends AbstractController{
     private HomeService homeService;
 
     /**
-     * 用户登录
+     * 用户登录test
      * @param account
      * @param passwd
      * @param deviceId
@@ -123,7 +123,7 @@ public class AuthController  extends AbstractController{
 	@RequestMapping(value = {"/seniorSendMsgcode.action"}, method = {GET, POST })
 	@ResponseBody
 	public ApiResponseBody seniorSendMsgcode(
-			@RequestParam("payphone")String payphone,
+			   @RequestParam("payphone")String payphone,
 			@RequestParam("teamid")int teamid,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String msgcode = this.authService.seniorSendMsgcode(payphone, teamid);
